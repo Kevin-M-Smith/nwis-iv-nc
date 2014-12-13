@@ -41,7 +41,7 @@ cc <- foreach(i = 1) %dopar% {
 
 cc <- foreach(i = 2:nrow(sites)) %dopar% { 
 	result = tryCatch({
-		bootstrap(sites[i,1], delay = runif(1, 100, 600) 
+		bootstrap(sites[i,1], delay = runif(1, 0.1, 0.6) 
 	}, warning = function(w) {
 	}, error = function(e) {
 		cat(paste("Site:",
