@@ -44,7 +44,7 @@ cc <- foreach(i = 2:nrow(sites)) %dopar% {
 		bootstrap(sites[i,1], delay = runif(1, 0.1, 0.6))
 	}, warning = function(w) {
 	}, error = function(e) {
-		cat(paste("Site:",
+		cat(paste("\nSite:",
 		sites[i,1],
 		"at index",
 		i,
