@@ -43,6 +43,7 @@ cc <- foreach(i = 1) %dopar% {
  }
 
 cc <- foreach(i = 2:nrow(sites)) %dopar% { 
+	setTxtProgressBar(pb, i)
 	result = tryCatch({
 		bootstrap(sites[i,1], delay = runif(1, 0.1, 0.6))
 	}, warning = function(w) {
@@ -61,9 +62,6 @@ cc <- foreach(i = 2:nrow(sites)) %dopar% {
 		sites[i,1], "', '", error, "', '", str(xml), "');", sep = "")
 		
 	}, finally = {
-		if(i%%5 == 0){
-			setTxtProgressBar(pb, i)
-	    }
 	})
 }
 

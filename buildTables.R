@@ -41,11 +41,9 @@ pb <- txtProgressBar(min = 1, max = 49, style = 3)
 
 cc <- foreach(i = 1) %dopar% { download.site.file(state.abb[i]) }
 
-cc <- foreach(i = 2:50) %dopar% { 
+cc <- foreach(i = 2:50) %dopar% {
+		setTxtProgressBar(pb, i)
 		download.site.file(state.abb[i]) 
-		if(i%%5 == 0){
-			setTxtProgressBar(pb, i)
-		}
 	}
 
 setTxtProgressBar(pb, 49)
