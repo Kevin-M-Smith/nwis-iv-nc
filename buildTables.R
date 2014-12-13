@@ -75,6 +75,7 @@ cc <- foreach(i = 1) %dopar% {
  }
 
 cc <- foreach(i = 2:length(map)) %dopar% { 
+	setTxtProgressBar(pb, i)
 	result = tryCatch({
 		if(length(map[[i]]) > 1){
 			send <- paste(map[[i]], collapse=',')
@@ -92,9 +93,6 @@ cc <- foreach(i = 2:length(map)) %dopar% {
 		e)
 	    )
 	}, finally = {
-	    if(i%%2 == 0){
-		setTxtProgressBar(pb, i)
-	    }
 	})
 }
 
