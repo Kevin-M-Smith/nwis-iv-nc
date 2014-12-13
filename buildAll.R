@@ -56,7 +56,7 @@ cc <- foreach(i = 2:nrow(pairs)) %dopar% {
 
 setTxtProgressBar(pb, nrow(pairs))
 
-cat(“\nCleaning up connections...\n")
+cat("\nCleaning up connections...\n")
 cc <- clusterEvalQ(cl, {
         dbDisconnect(con2)
         dbUnloadDriver(drv2)
