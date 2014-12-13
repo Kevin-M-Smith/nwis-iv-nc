@@ -56,10 +56,8 @@ cc <- foreach(i = 2:nrow(sites)) %dopar% {
 		e)
 
 		cat(error)
-	    )
-	   cc <- dbGetQuery(con2, 
-		paste("INSERT INTO BootstrapErrors VALUES ('",
-		sites[i,1], "', '", error, "', '", str(xml), "');", sep = "")
+	   cc <- dbGetQuery(con, 
+		paste("INSERT INTO BootstrapErrors VALUES ('", sites[i,1], "', '", error, "', '", str(xml), "');", sep = "")
 		
 	}, finally = {
 	})
