@@ -33,6 +33,9 @@ cc <- clusterEvalQ(cl, {
 cat("===========================================\n")
 cat(paste("Bootstrapping",
 	nrow(sites), "sites...\n"))
+
+cc <- dbGetQuery(con, "CREATE TABLE BootstrapErrors (site_no text, error text, file xml);")
+
 pb <- txtProgressBar(min = 1, max = nrow(sites), style = 3)
 
 cc <- foreach(i = 1) %dopar% { 
@@ -44,13 +47,19 @@ cc <- foreach(i = 2:nrow(sites)) %dopar% {
 		bootstrap(sites[i,1], delay = runif(1, 0.1, 0.6))
 	}, warning = function(w) {
 	}, error = function(e) {
-		cat(paste("\nSite:",
+		error <- paste("\nSite:",
 		sites[i,1],
 		"at index",
 		i,
 		"failed:",
 		e)
+
+		cat(error)
 	    )
+	   cc <- dbGetQuery(con2, 
+		paste("INSERT INTO BootstrapErrors VALUES ('",
+		sites[i,1], "', '", error, "', '", str(xml), "');", sep = "")
+		
 	}, finally = {
 		if(i%%5 == 0){
 			setTxtProgressBar(pb, i)
