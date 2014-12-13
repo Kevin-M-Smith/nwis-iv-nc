@@ -1,5 +1,5 @@
-bootstrap <- function(site){ 
-  
+bootstrap <- function(site, delay = 100){ 
+  Sys.sleep(delay);
   #drv2 <- dbDriver("PostgreSQL") 
   #con2 <- dbConnect(drv2, dbname = "postgres", user="postgres", host="localhost", password="usgs") 
  
