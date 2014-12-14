@@ -160,9 +160,9 @@ cat("===========================================\n")
 cat("Building empty data table...\n")
 
 
-#cc <- dbGetQuery(con, "CREATE TABLE IF NOT EXISTS data (ts timestamp with time zone NOT NULL, seriesId text NOT NULL, familyId text, value numeric, paramcd text, validated integer, imported timestamp with time zone, updated timestamp with time zone, PRIMARY KEY(ts, seriesId) );")
+cc <- dbGetQuery(con, "CREATE TABLE IF NOT EXISTS data (ts timestamp with time zone NOT NULL, seriesId text NOT NULL, familyId text, value numeric, paramcd text, validated integer, imported timestamp with time zone, updated timestamp with time zone, PRIMARY KEY(ts, seriesId) );")
 
-cc <- dbGetQuery(con, "CREATE TABLE IF NOT EXISTS data (ts timestamp with time zone NOT NULL, seriesId text NOT NULL, familyId text, value numeric, paramcd text, validated integer, imported timestamp with time zone, updated timestamp with time zone);")
+#cc <- dbGetQuery(con, "CREATE TABLE IF NOT EXISTS data (ts timestamp with time zone NOT NULL, seriesId text NOT NULL, familyId text, value numeric, paramcd text, validated integer, imported timestamp with time zone, updated timestamp with time zone);")
 
 # cc <- dbGetQuery(con, "
 #  CREATE OR REPLACE RULE data_merge AS
