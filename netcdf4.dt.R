@@ -168,7 +168,10 @@ data.ts < '", endDate, "';", sep = ""))
   
   nc_close(out)
   
-  print(gc(reset = TRUE))
+  system(paste("nccopy -d 9 out2/", 
+		startDate, 
+		".nc out2/2/",
+		startDate,".nc", sep = ""));
   
 }
 

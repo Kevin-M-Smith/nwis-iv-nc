@@ -74,7 +74,7 @@ cc <- clusterEvalQ(cl, {
         dbUnloadDriver(drv2)
 })
 cc <- stopCluster(cl)
-cc <-dbDisconnect(con)
+cc <- dbDisconnect(con)
 cc <- dbUnloadDriver(drv)
 
 

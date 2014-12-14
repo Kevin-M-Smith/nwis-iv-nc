@@ -19,7 +19,7 @@ cat("Connecting to database...\n")
 #################################
 cat("===========================================\n")
 cat("Setting up cluster...\n")
-cl <- makePSOCKcluster(detectCores(), outfile = "")
+cl <- makePSOCKcluster(2, outfile = "")
 registerDoParallel(cl)
 cc <- clusterEvalQ(cl, {
 	require(RPostgreSQL)

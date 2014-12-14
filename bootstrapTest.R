@@ -1,6 +1,18 @@
+#!/usr/bin/Rscript
+cat("===========================================\n")
+cat("           BOOTSTRAPPER                    \n")
+cat("===========================================\n")
+cat("Loading libraries...\n")
+require(RPostgreSQL)
+require(RCurl)
+require(XML)
+require(doParallel)
 
-cc <- dbDisconnect(con)
-cc <- dbUnloadDriver(drv)
+cat("===========================================\n")
+cat("Connecting to database...\n")
+drv <- dbDriver("PostgreSQL")
+con <- dbConnect(drv, dbname = "postgres", user="postgres", host="localhost", password="usgs")
+sites <- dbGetQuery(con, "SELECT site_no from activesites;")
 
 cat("===========================================\n")
 cat("Setting up cluster...\n")
@@ -48,6 +60,8 @@ cc <- clusterEvalQ(cl, {
         dbUnloadDriver(drv2)
 })
 cc <- stopCluster(cl)
+cc <-dbDisconnect(con)
+cc <- dbUnloadDriver(drv)
 
 cat("===========================================\n")
 cat("	Bootstrapping  test complete.			\n") 
