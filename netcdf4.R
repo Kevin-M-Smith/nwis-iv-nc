@@ -40,15 +40,19 @@ data.ts < '", endDate, "';", sep = ""))
   nParams <- length(params)
   
   # build padded table
-  data.pad <- expand.grid(ts = times, familyid = layers, paramcd = params, stringsAsFactors = FALSE)
+   data.pad <- expand.grid(ts = times, familyid = layers, paramcd = params, stringsAsFactors = FALSE)
+  #data.pad <- CJ(ts = times, familyid = layers, paramcd = params)
   
   # fill padded with data 
   data.pad <- join(data.pad, data, by = c("ts", "familyid", "paramcd"))
   
   # metadata padding (really a reorder in this revision)
-  meta.pad <- join(expand.grid(familyid = layers, stringsAsFactors = FALSE), 
+   meta.pad <- join(expand.grid(familyid = layers, stringsAsFactors = FALSE), 
                    metadata,
-                   by = c("familyid"))
+                 by = c("familyid"))
+  
+  
+  
   
   # free memory
   if(debugMode == FALSE) remove(data, metadata)

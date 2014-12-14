@@ -17,7 +17,8 @@ bootstrap <- function(site, delay = 0.1){
   valid <- function(x){
   	if(x == "P") 0 else 1
   }
-
+	
+  if(length(vars) > 0){
   for (i in 1:length(vars)){ 
     parent <- xmlDoc(vars[[i]]) 
     parent <- xmlRoot(parent) 
@@ -28,9 +29,11 @@ bootstrap <- function(site, delay = 0.1){
     for (j in 1:length(sensors)){ 
       child <- xmlDoc(sensors[[j]]) 
       child <- xmlRoot(child) 
+      if(!is.null(unlist(xpathApply(child, "//@dateTime")))){
       childName <- unlist(xpathApply(child, "//ns1:method/@methodID")) 
        
       childName <- formatC(strtoi(childName), width = 5, format = "d", flag = "0")  
+      
       res <- data.frame( 
         unlist(xpathApply(child, "//@dateTime")), 
         paste(parentName, ":", childName, sep = ""), 
@@ -44,9 +47,10 @@ bootstrap <- function(site, delay = 0.1){
        
       colnames(res) <- c("ts", "seriesid", "value", "validated", "imported", "updated") 
       dbWriteTable(con2, "data", res, append = TRUE, row.names = FALSE, overwrite = FALSE) 
-    } 
+    }
+	} 
   } 
-   
+   }
   #dbDisconnect(con2) 
   #dbUnloadDriver(drv2) 
 } 
