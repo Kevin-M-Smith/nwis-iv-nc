@@ -4,6 +4,9 @@ test:
 bootstrap:
 	time ./bootstrap.R
 
+update:
+	time ./update.R
+
 buildall:
 	mkdir -p out
 	time ./buildAll.R
