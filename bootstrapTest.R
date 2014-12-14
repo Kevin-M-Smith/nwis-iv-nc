@@ -1,18 +1,4 @@
-#!/usr/bin/Rscript
-cat("===========================================\n")
-cat("	BOOTSTRAPPER : TEST			\n")
-cat("===========================================\n")
-cat("Loading libraries...\n")
-require(RPostgreSQL)
-require(RCurl)
-require(XML)
-require(doParallel)
 
-cat("===========================================\n")
-cat("Connecting to database...\n")
-drv <- dbDriver("PostgreSQL")
-con <- dbConnect(drv, dbname = "postgres", user="postgres", host="localhost", password="usgs")
-sites <- dbGetQuery(con, "SELECT site_no from activesites;")
 cc <- dbDisconnect(con)
 cc <- dbUnloadDriver(drv)
 
@@ -34,11 +20,11 @@ cat("===========================================\n")
 cat(paste("Bootstrapping",
 	10, "sites...\n"))
 	
-foreach(i = 1) %dopar% { 
+cc <- foreach(i = 1) %dopar% { 
 	bootstrap(sites[i,1])
  }
 
-foreach(i = 2:10) %dopar% { 
+cc <- foreach(i = 2:10) %dopar% { 
 	result = tryCatch({
 		bootstrap(sites[i,1], delay = runif(1, 0.1, 0.6)) 
 	}, warning = function(w) {
