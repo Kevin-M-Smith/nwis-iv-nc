@@ -159,7 +159,39 @@ ON
 cat("===========================================\n")
 cat("Building empty data table...\n")
 
-cc <- dbGetQuery(con, "CREATE TABLE IF NOT EXISTS data (ts timestamp with time zone, seriesId text, familyId text, value numeric, paramcd text, validated integer, imported timestamp with time zone, updated timestamp with time zone);")
+
+#cc <- dbGetQuery(con, "CREATE TABLE IF NOT EXISTS data (ts timestamp with time zone NOT NULL, seriesId text NOT NULL, familyId text, value numeric, paramcd text, validated integer, imported timestamp with time zone, updated timestamp with time zone, PRIMARY KEY(ts, seriesId) );")
+
+cc <- dbGetQuery(con, "CREATE TABLE IF NOT EXISTS data (ts timestamp with time zone NOT NULL, seriesId text NOT NULL, familyId text, value numeric, paramcd text, validated integer, imported timestamp with time zone, updated timestamp with time zone);")
+
+# cc <- dbGetQuery(con, "
+#  CREATE OR REPLACE RULE data_merge AS
+#  ON COPY TO data
+#  WHERE (EXISTS (SELECT 1 FROM data WHERE data.ts = NEW.ts AND data.seriesid = NEW.seriesid))
+#  DO INSTEAD
+#  UPDATE data SET updated = NEW.updated,
+#    		validated = 5000,
+#    		value = NEW.value
+#  WHERE data.ts = NEW.ts AND data.seriesid = NEW.seriesid;")
+
+cc <- dbGetQuery(con, "CREATE OR REPLACE FUNCTION upsert() RETURNS TRIGGER AS $$
+BEGIN
+  IF (SELECT COUNT(ts) FROM data WHERE ts = NEW.ts AND seriesid = NEW.seriesid) = 1 THEN
+    UPDATE data SET 
+    	updated = NEW.updated,
+    	validated = NEW.validated,
+    	value = NEW.value
+    	WHERE ts = NEW.ts AND seriesid = NEW.seriesid;
+    RETURN NULL;
+  END IF;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER data_merge BEFORE INSERT ON data FOR EACH ROW EXECUTE PROCEDURE upsert();")
+
+cc <- dbGetQuery(con, "ALTER TABLE data SET (autovacuum_enabled = false);")
 
 cc <- dbGetQuery(con, "CREATE INDEX combined_index on data(ts, paramcd, seriesid);") 
 cc <- dbGetQuery(con, "CREATE INDEX validated_index on data(validated);")

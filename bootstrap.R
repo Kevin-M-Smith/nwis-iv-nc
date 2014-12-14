@@ -13,8 +13,7 @@ cat("Connecting to database...\n")
 drv <- dbDriver("PostgreSQL")
 con <- dbConnect(drv, dbname = "postgres", user="postgres", host="localhost", password="usgs")
 sites <- dbGetQuery(con, "SELECT site_no from activesites;")
-cc <-dbDisconnect(con)
-cc <- dbUnloadDriver(drv)
+
 
 cat("===========================================\n")
 cat("Setting up cluster...\n")
@@ -34,7 +33,8 @@ cat("===========================================\n")
 cat(paste("Bootstrapping",
 	nrow(sites), "sites...\n"))
 
-cc <- dbGetQuery(con, "CREATE TABLE BootstrapErrors (site_no text, error text, file xml);")
+cc <- dbGetQuery(con, "DROP TABLE BootstrapErrors;")
+cc <- dbGetQuery(con, "CREATE TABLE BootstrapErrors (site_no text, error text, file text);")
 
 pb <- txtProgressBar(min = 1, max = nrow(sites), style = 3)
 
@@ -56,9 +56,12 @@ cc <- foreach(i = 2:nrow(sites)) %dopar% {
 		e)
 
 		cat(error)
-	   cc <- dbGetQuery(con, 
-		paste("INSERT INTO BootstrapErrors VALUES ('", sites[i,1], "', '", error, "', '", str(xml), "');", sep = "")
-		
+	   	cc <- dbGetQuery(con2, 
+			paste("INSERT INTO BootstrapErrors VALUES ('", 
+				sites[i,1], "', '", 
+				error, "', '", 
+				g.value(), "');", sep = "")
+			)
 	}, finally = {
 	})
 }
@@ -71,6 +74,9 @@ cc <- clusterEvalQ(cl, {
         dbUnloadDriver(drv2)
 })
 cc <- stopCluster(cl)
+cc <-dbDisconnect(con)
+cc <- dbUnloadDriver(drv)
+
 
 cat("===========================================\n")
 cat("	Bootstrapping complete. 		 
