@@ -6,6 +6,7 @@ pkgs = c("RPostgreSQL",
 	"dataRetrieval",
 	"doParallel",
 	"lubridate",
-	"ncdf4")
+	"ncdf4",
+	"data.table")
 
 install.packages(pkgs, repos = "http://cran.us.r-project.org", type = "source")
