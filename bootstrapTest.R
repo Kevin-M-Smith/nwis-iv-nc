@@ -18,13 +18,13 @@ cc <- clusterEvalQ(cl, {
 
 cat("===========================================\n")
 cat(paste("Bootstrapping",
-	10, "sites...\n"))
+	50, "sites...\n"))
 	
-cc <- foreach(i = 1) %dopar% { 
+cc <- foreach(i = 51) %dopar% { 
 	bootstrap(sites[i,1])
  }
 
-cc <- foreach(i = 2:10) %dopar% { 
+cc <- foreach(i = 52:500) %dopar% { 
 	result = tryCatch({
 		bootstrap(sites[i,1], delay = runif(1, 0.1, 0.6)) 
 	}, warning = function(w) {

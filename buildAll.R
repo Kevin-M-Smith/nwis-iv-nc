@@ -28,6 +28,7 @@ cc <- clusterEvalQ(cl, {
 	require(reshape2)
 	require(lubridate)
 	require(ncdf4)	
+  require(data.table)
 	drv2 <- dbDriver("PostgreSQL")
 	con2 <- dbConnect(drv2, dbname = "postgres", user = "postgres", host = "localhost", password = "usgs")
 	source("netcdf4.R")

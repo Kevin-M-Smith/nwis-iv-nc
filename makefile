@@ -8,6 +8,10 @@ buildall:
 	mkdir -p out
 	time ./buildAll.R
 
+buildall2:
+	mkdir -p out2
+	time ./buildAll2.R
+
 destroy:
 	time ./destroyTables.R
 

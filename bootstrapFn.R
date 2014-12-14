@@ -17,7 +17,11 @@ bootstrap <- function(site, delay = 0.1){
   valid <- function(x){
   	if(x == "P") 0 else 1
   }
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> 521629bc322a4200c4113be0b61cbbe1849791ca
   if(length(vars) > 0){
   for (i in 1:length(vars)){ 
     parent <- xmlDoc(vars[[i]]) 
@@ -30,7 +34,10 @@ bootstrap <- function(site, delay = 0.1){
       child <- xmlDoc(sensors[[j]]) 
       child <- xmlRoot(child) 
       if(!is.null(unlist(xpathApply(child, "//@dateTime")))){
+<<<<<<< HEAD
       
+=======
+>>>>>>> 521629bc322a4200c4113be0b61cbbe1849791ca
       childName <- unlist(xpathApply(child, "//ns1:method/@methodID")) 
       childName <- formatC(strtoi(childName), width = 5, format = "d", flag = "0")  
       
@@ -46,12 +53,20 @@ bootstrap <- function(site, delay = 0.1){
       ) 
        
       colnames(res) <- c("ts", "seriesid", "value", "validated", "imported", "updated") 
+<<<<<<< HEAD
       cc <- dbWriteTable(con2, "data", res, append = TRUE, row.names = FALSE, overwrite = FALSE) 
       }
     } 
   }
 } 
    
+=======
+      dbWriteTable(con2, "data", res, append = TRUE, row.names = FALSE, overwrite = FALSE) 
+    }
+	} 
+  } 
+   }
+>>>>>>> 521629bc322a4200c4113be0b61cbbe1849791ca
   #dbDisconnect(con2) 
   #dbUnloadDriver(drv2) 
 } 
