@@ -68,15 +68,15 @@ data.ts < '", endDate, "';", sep = ""))
   
   # v#####_value          double  :: layer, time
   buildParameterVars <- function(paramcode){
-    ncvar_def(paste("v", paramcode, "_value", sep = ""),
-              units = "", dim = list(layer_dim, ts_dim), prec = "double")
+    ncvar_def(paste("v", paramcode, "_value", sep = ""), missval = -999999.0,
+              units = "", dim = list(ts_dim, layer_dim), prec = "double")
   }
   parameterVars <- lapply(params, buildParameterVars)
   
   # v#####_valiated       boolean :: layer, time
   buildValidatedVars <- function(paramcode){
-    ncvar_def(paste("v", paramcode, "_validated", sep = ""), 
-              units = "", dim = list(layer_dim, ts_dim), prec = 'double')
+    ncvar_def(paste("v", paramcode, "_validated", sep = ""), missval = -999999.0,
+              units = "", dim = list(ts_dim, layer_dim), prec = 'double')
   }
   validatedVars <- lapply(params, buildValidatedVars)
   
@@ -149,9 +149,9 @@ data.ts < '", endDate, "';", sep = ""))
   putData <- function(param_cd){
     value = t(dcast(data.pad.value, ts ~ familyid, subset = .(paramcd == param_cd)))[-1,]
     valid = t(dcast(data.pad.valid, ts ~ familyid, value.var = "validated", subset = .(paramcd == param_cd)))[-1,]
-    descr <- subset(descript, parm_cd = param_cd)
-    ncvar_put(out, paste("v", param_cd, "_value", sep = ""), value)
-    ncvar_put(out, paste("v", param_cd, "_validated", sep = ""), valid)
+    descr <- subset(descript, parm_cd == param_cd, select = "loc_web_ds")
+    ncvar_put(out, paste("v", param_cd, "_value", sep = ""), t(value))
+    ncvar_put(out, paste("v", param_cd, "_validated", sep = ""), t(valid))
     ncvar_put(out, paste("v", param_cd, "_description", sep = ""), unlist(descr))
   }
   

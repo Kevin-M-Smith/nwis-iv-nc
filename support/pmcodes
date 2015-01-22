@@ -1360,8 +1360,7 @@ parameter_cd	parameter_group_nm	parameter_nm	casrn	srsname	parameter_units
 00031	Physical	Incident light remaining at depth, percent			%
 00032	Physical	Cloud cover, percent		Cloud cover (percent)	%
 00034	Physical	Depth to 1 percent of surface light, feet		Light attenuation, depth at 99%	ft
-00035	Physical	Wind speed, miles per hour			mph
-00036	Physical	Wind direction, degrees clockwise from true north		Wind direction	Deg
+w00036	Physical	Wind direction, degrees clockwise from true north		Wind direction	Deg
 00045	Physical	Precipitation, total, inches		Precipitation	in
 00046	Physical	Precipitation, total, inches per week		Precipitation	in/week
 00047	Physical	Total partial pressure of dissolved gases, water, unfiltered, millimeters of mercury		Partial pressure of dissolved gases	mm/Hg
